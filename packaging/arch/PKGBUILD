@@ -1,10 +1,10 @@
 # SPDX-License-Identifier: MIT
 # Arch Linux ARM split package for the TB323FU (Lenovo Legion Tab Gen 5) helper
 # suite and platform files. Build on aarch64 with `makepkg -s`.
-# Untested: no Arch Linux ARM system was available when this was written.
+# Not tested with makepkg (as of 2026-10-30); the guided installer's Arch root uses the Debian packages instead.
 pkgbase=tb323fu-linux
 pkgname=(tb323fu-platform tb323fu-helper tb323fu-settings tb323fu-helper-gnome)
-pkgver=0.4.3
+pkgver=0.4.5
 pkgrel=1
 arch=(aarch64)
 url=https://github.com/joonhoekim/tb323fu-linux
@@ -37,11 +37,13 @@ package_tb323fu-platform() {
 	            'iio-sensor-proxy: rotation and light sensors'
 	            'hexagonrpcd: sensor DSP'
 	            'qrtr: QRTR tools'
+	            'libcamera: cameras'
+	            'pipewire-libcamera: cameras in apps'
 	            'tb323fu-helper: charge limit, refresh, torch, ...')
 	backup=(etc/tb323fu/audio.conf etc/tb323fu/emergency-key.conf etc/udev/rules.d/90-feedbackd.rules)
 	install=tb323fu-platform.install
 	cd "$pkgbase"
-	DESTDIR="$pkgdir" PREFIX=/usr SYSCONFDIR=/etc sh userspace/platform/install.sh
+	DESTDIR="$pkgdir" PREFIX=/usr SYSCONFDIR=/etc VERSION=$pkgver sh userspace/platform/install.sh
 	# Arch: /usr/sbin is a symlink to bin owned by the filesystem package
 	if [ -d "$pkgdir/usr/sbin" ]; then
 		install -d "$pkgdir/usr/bin"

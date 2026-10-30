@@ -26,7 +26,7 @@ that can run arm64 programs (to build the tablet's root filesystem) and `adb` to
 
 | PC | How the script runs | Status ([labels](hardware-status.md#labels-on-other-pages)) |
 |---|---|---|
-| **Windows 10/11** | in Ubuntu under WSL2, with the Windows `adb.exe` | **followed end to end** on a tablet (2026-10-04) → [Installing from Windows](install-windows.md) |
+| **Windows 10/11** | in Ubuntu under WSL2, with the Windows `adb.exe` | **followed end to end** on a tablet (2026-10-29, again from a new WSL2 Ubuntu; first 2026-10-04) → [Installing from Windows](install-windows.md) |
 | **Linux** | directly, with the system's `adb`; on NixOS in an Ubuntu container | **followed end to end** once from NixOS through the container, up to the first start (2026-10-04); a plain Debian/Ubuntu PC not tried → [Installing from Linux](install-linux.md) |
 | **macOS** | in an arm64 Linux virtual machine (Lima), using the Mac's `adb` server; no USB passthrough | **followed end to end** once, up to the first start (2026-10-04) → [Installing from macOS](install-macos.md) |
 
@@ -45,7 +45,7 @@ builder takes care of.
 | **Start here** | Ubuntu 26.04 with GNOME | the guided script, as above — followed end to end |
 | | Arch Linux ARM with GNOME | the same script with `DISTRO=arch` — followed end to end once; no rotation sensor |
 | | NixOS with GNOME | the same script with `DISTRO=nixos` — followed end to end once; its configuration is editable on the tablet ([how](distros.md#nixos-your-own-configuration)) |
-| | SteamOS (community port) | the same script with `DISTRO=steamos` — experimental: Gaming Mode works on kernel t39 or later, Switch to Desktop does not yet |
+| | SteamOS (community port) | the same script with `DISTRO=steamos` — experimental: Gaming Mode works on kernel t39 or later, Switch to Desktop does not ([known problems](distros.md#known-problems)) |
 | | Fedora (with FEX for x86 games) | built on the tablet itself, from a first Linux root: [Distributions → Installing each one](distros.md#installing-each-one) |
 | | Armada (experimental, `DISTRO=armada`), anything else (postmarketOS, Debian, your own) | Armada boots into Gaming Mode; the others are not tried yet; what a root needs and how to plug your own builder into the script: [Distributions → Your own distribution](distros.md#your-own-distribution) |
 

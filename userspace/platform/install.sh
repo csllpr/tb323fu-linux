@@ -8,6 +8,7 @@
 #   DESTDIR=/mnt/root sh install.sh        # into a mounted root filesystem
 #   PREFIX=/usr SYSCONFDIR=/etc CC=cc      # defaults
 #   OPTIONAL="logind debian-iio image-growroot" sh install.sh
+#   VERSION=X.Y.Z                         # default: helper/Cargo.toml of this tree
 #
 # Existing files under $SYSCONFDIR/tb323fu are never overwritten (your settings,
 # your Bluetooth address). keyhold is built from src/keyhold.c when a C compiler
@@ -49,10 +50,12 @@ putdir 755 systemd/system-sleep "$PREFIX/lib/systemd/system-sleep"
 putdir 644 systemd/user "$PREFIX/lib/systemd/user"
 # what kernel releases can ask for (min_platform in a kernel manifest)
 mkdir -p "$DESTDIR$PREFIX/share/tb323fu"
-echo "${VERSION:-0.1.0}" > "$DESTDIR$PREFIX/share/tb323fu/platform-version"
+[ -n "${VERSION:-}" ] || VERSION=$(sed -n 's/^version = "\(.*\)"/\1/p' "$here/../../helper/Cargo.toml" 2>/dev/null | head -n1)
+echo "${VERSION:-unknown}" > "$DESTDIR$PREFIX/share/tb323fu/platform-version"
 
 # helpers
 putdir 755 libexec "$libexec"
+install -D -m 755 "$here/bin/tb323fu-check" "$DESTDIR$PREFIX/bin/tb323fu-check"
 if command -v "$CC" > /dev/null 2>&1; then
 	mkdir -p "$DESTDIR$libexec"
 	"$CC" -O2 -Wall -o "$DESTDIR$libexec/keyhold" "$here/src/keyhold.c"

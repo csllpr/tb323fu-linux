@@ -8,14 +8,14 @@
 { lib, stdenv, busybox, src }:
 stdenv.mkDerivation {
   pname = "tb323fu-platform";
-  version = "0.4.3";
+  version = (lib.importTOML "${src}/helper/Cargo.toml").workspace.package.version;
   inherit src;
   dontConfigure = true;
   dontBuild = true;
   installPhase = ''
     runHook preInstall
     stage=$TMPDIR/stage
-    DESTDIR=$stage PREFIX=$out SYSCONFDIR=/etc CC=$CC sh userspace/platform/install.sh
+    DESTDIR=$stage PREFIX=$out SYSCONFDIR=/etc CC=$CC VERSION=$version sh userspace/platform/install.sh
     mkdir -p $out
     cp -a $stage$out/. $out/
     mkdir -p $out/share/tb323fu
@@ -26,7 +26,7 @@ stdenv.mkDerivation {
     # back-to-android is also the initramfs' copy: it runs under busybox sh
     # (not busybox in buildInputs -- its find/xargs would shadow stdenv's)
     substituteInPlace $out/sbin/back-to-android --replace-fail '#!/bin/sh' '#!${busybox}/bin/busybox sh'
-    patchShebangs $out/libexec $out/sbin $out/lib/systemd/system-sleep
+    patchShebangs $out/bin $out/libexec $out/sbin $out/lib/systemd/system-sleep
     runHook postInstall
   '';
   meta = with lib; {
