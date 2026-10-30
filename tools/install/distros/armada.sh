@@ -22,10 +22,10 @@ EOF2
 ladspa_from_ubuntu() { # DIR
 	local d=$1 fn
 	[ -e "$d/usr/lib/ladspa/sc4_1882.so" ] && return 0
-	fn=$(curl -fsSL http://ports.ubuntu.com/ubuntu-ports/dists/noble/universe/binary-arm64/Packages.gz | gzip -dc |
+	fn=$(curl -fsSL https://ports.ubuntu.com/ubuntu-ports/dists/noble/universe/binary-arm64/Packages.gz | gzip -dc |
 		awk '/^Package: swh-plugins$/ {f=1} f && /^Filename:/ {print $2; exit}')
 	[ -n "$fn" ] || { warn "swh-plugins not found in Ubuntu's arm64 archive"; return 1; }
-	mkdir -p "$d" && curl -fsSL -o "$d/swh.deb" "http://ports.ubuntu.com/ubuntu-ports/$fn" && dpkg-deb -x "$d/swh.deb" "$d"
+	mkdir -p "$d" && curl -fsSL -o "$d/swh.deb" "https://ports.ubuntu.com/ubuntu-ports/$fn" && dpkg-deb -x "$d/swh.deb" "$d"
 }
 
 distro_build() { # MNT USER
